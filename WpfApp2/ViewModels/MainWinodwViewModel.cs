@@ -1,6 +1,7 @@
 ﻿using Laba10.Commands;
 using Laba10.ViewModels.Base;
 using System.Collections.ObjectModel;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,7 +15,7 @@ namespace Laba10.ViewModels
     internal class MainWinodwViewModel : ViemModel
     {
         ///////////////////////////////////
-        ///Field
+        //Properties
 
         #region StatusBarLable
 
@@ -54,7 +55,7 @@ namespace Laba10.ViewModels
 
         #endregion
 
-        ///InkCanvas
+        //InkCanvas
 
         #region InkCanvasBackground
 
@@ -70,9 +71,9 @@ namespace Laba10.ViewModels
 
         #region EditModeInkCanvas
 
-        private InkCanvas _editModeInkCanvas = new InkCanvas();
+        private InkCanvasEditingMode _editModeInkCanvas = new InkCanvasEditingMode();
 
-        public InkCanvas EditModeInkCanvas
+        public InkCanvasEditingMode EditModeInkCanvas
         {
             get => _editModeInkCanvas;
             set => Set(ref _editModeInkCanvas, value);           
@@ -92,7 +93,7 @@ namespace Laba10.ViewModels
 
         #endregion
 
-        ///Combobox
+        //Combobox
 
         #region SelectedValueCombobox
 
@@ -143,11 +144,66 @@ namespace Laba10.ViewModels
 
         #endregion
 
+        //RadioButton
+
+        #region IsInkModeChecked
+
+        private bool _isInkModeChecked;
+        public bool IsInkModeChecked
+        {
+            get => _isInkModeChecked;
+            set
+            {
+                if (_isInkModeChecked != value)
+                {
+                    _isInkModeChecked = value;
+                    Set(ref _isInkModeChecked, value);
+                }
+            }
+        }
+
+        #endregion
+
+        #region IsEditingModeChecked
+
+        private bool _isEditingModeChecked;
+        public bool IsEditingModeChecked
+        {
+            get => _isEditingModeChecked;
+            set
+            {
+                if (_isEditingModeChecked != value)
+                {
+                    _isEditingModeChecked = value;
+                    Set(ref _isEditingModeChecked, value);
+                }
+            }
+        }
+
+        #endregion
+
+        #region IsDeleteModeChecked
+
+        private bool _isDeleteModeChecked;
+        public bool IsDeleteModeChecked
+        {
+            get => _isDeleteModeChecked;
+            set
+            {
+                if (_isDeleteModeChecked != value)
+                {
+                    _isDeleteModeChecked = value;
+                    Set(ref _isDeleteModeChecked, value);
+                }
+            }
+        }
+
+        #endregion
 
         ///////////////////////////////////
-        /// Command
+        // Command
 
-        ///MenuItemCommand
+        //MenuItemCommand
 
         #region MenuItemBackgroundWhiteCommand
 
@@ -201,30 +257,41 @@ namespace Laba10.ViewModels
         #endregion
 
 
-        ///ToolBarCommand
+        //ToolBarCommand
 
-        #region ToggleButtonCommand
+        #region RadioButtonCommand
 
-        public ICommand ToggleButtonCommand { get; }
+        public ICommand RadioButtonCommand { get; }
 
-        private void ExecuteToggleButtonCommand(object p)
+        private void ExecuteRadioButtonCommand(object p)
         {
-            ToggleButtonMethod();
-        }
+            string mode = p.ToString();
+            IsInkModeChecked = mode == "Рисование";
+            IsEditingModeChecked = mode == "Редактирование";
+            IsDeleteModeChecked = mode == "Удаление";
 
-        private bool CanExecuteToggleButtonCommand(object p)
-        {
-            
-            return true;
+            string selectedMode = p.ToString();
+            RadioButtonMethod(selectedMode);
         }
 
         #endregion
 
+
+
+
         ///////////////////////////////////
-        /// Constructor  
+        // Constructor  
         public MainWinodwViewModel()
         {
-            ///Combobox
+            //Default 
+            var brush = new SolidColorBrush(Colors.Red);
+            DrawingAttributesInkCanvas.Color = brush.Color;
+
+            string selectedMode = "Рисование";
+            RadioButtonMethod(selectedMode);
+            IsInkModeChecked = true;
+
+            //Combobox items
             ItemsCombobox = new ObservableCollection<string>
             {
                 "Красный",
@@ -232,56 +299,37 @@ namespace Laba10.ViewModels
                 "Зеленый"
             };
 
-            ///Default 
-            var brush = new SolidColorBrush(Colors.Red);
-            DrawingAttributesInkCanvas.Color = brush.Color;
-
-            ///MenuItemCommand
+            //MenuItemCommand
             MenuItemBackgroundWhiteCommand = new LambdaCommand(ExecuteMenuItemBackgroundWhiteCommand);
             MenuItemBackgroundBlackCommand = new LambdaCommand(ExecuteMenuItemBackgroundBlackCommand);
             MenuItemExitCommand = new LambdaCommand(ExecuteMenuItemExitCommand);
             MenuItemAboutCommand = new LambdaCommand(ExecuteMenuItemAboutCommand);
 
             //ToolBarCommand
-            ToggleButtonCommand = new LambdaCommand(ExecuteToggleButtonCommand, CanExecuteToggleButtonCommand);
-
+            RadioButtonCommand = new LambdaCommand(ExecuteRadioButtonCommand);
         }
 
         ///////////////////////////////////
-        /// Method
-        public void ToggleButtonMethod()
+        // Method
+        public void RadioButtonMethod(string selectedMode)
         {
-            //var button = (ToggleButton)sender;
-
-            //selectedMode = button.Content.ToString();
-
-            //foreach (var item in Toolbar.Items)
-            //{
-            //    if (item is ToggleButton toolButton && toolButton != button)
-            //    {
-            //        toolButton.IsChecked = false;
-            //    }
-            //}
-
-            //button.IsChecked = true;
-
-            //switch (selectedMode)
-            //{
-            //    case "Рисование":
-            //        EditModeInkCanvas.EditingMode = InkCanvasEditingMode.Ink;
-            //        StatusBarLable = "Выбран режим рисование";
-            //        break;
-            //    case "Редактирование":
-            //        EditModeInkCanvas.EditingMode = InkCanvasEditingMode.Select;
-            //        StatusBarLable = "Выбран режим редактирование";
-            //        break;
-            //    case "Удаление":
-            //        EditModeInkCanvas.EditingMode = InkCanvasEditingMode.EraseByPoint;
-            //        StatusBarLable = "Выбран режим удаленеия";
-            //        break;
-            //    default:
-            //        break;
-            //}
+            switch (selectedMode)
+            {
+                case "Рисование":
+                    EditModeInkCanvas = InkCanvasEditingMode.Ink;
+                    StatusBarLable = "Выбран режим рисование";
+                    break;
+                case "Редактирование":
+                    EditModeInkCanvas = InkCanvasEditingMode.Select;
+                    StatusBarLable = "Выбран режим редактирование";
+                    break;
+                case "Удаление":
+                    EditModeInkCanvas = InkCanvasEditingMode.EraseByPoint;
+                    StatusBarLable = "Выбран режим удаления";
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
