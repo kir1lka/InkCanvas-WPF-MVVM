@@ -1,0 +1,252 @@
+﻿<Window x:Class="WpfApp2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp2"
+        mc:Ignorable="d"
+        
+        xmlns:vm ="clr-namespace:Laba10.ViewModels"
+        
+        Title="«Лабораторная работа № 11_Блинов" 
+        Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+
+
+    <Window.DataContext>
+        <vm:MainWinodwViewModel/>
+    </Window.DataContext>
+
+    <!--#region Прошлая разработка-->
+
+        <!--////////////////////////////////////////////////////////////////////////////////////////-->
+
+        <!--<DockPanel LastChildFill="True">
+
+            -->
+        <!-- Header -->
+        <!--
+            <Menu DockPanel.Dock="Top"
+              BorderThickness="1"                            
+              Panel.ZIndex="100"
+              Background="White" 
+              BorderBrush="Navy">
+
+                <MenuItem Header="_Вид">
+
+                    <MenuItem Header="_Фон1"
+                          Command="{Binding ChangeBackgroundCommand}"
+                          CommandParameter="White"/>
+                    <MenuItem Header="_Фон2"
+                          Command="{Binding ChangeBackgroundCommand}"
+                          CommandParameter="Black"/>
+
+                    <Separator/>
+
+                    <MenuItem Header="_Выход" 
+                          Command="{Binding ExitCommand}"/>
+                </MenuItem>
+
+                <MenuItem Header="_Справка" 
+                      Command="{Binding AboutCommand}"/>
+
+            </Menu>
+
+            -->
+        <!-- ContentTop -->
+        <!--
+            <ToolBar DockPanel.Dock="Top"
+                 x:Name="Toolbar">
+
+                <Label Content="Кисть"
+                   ToolTip="Режим удаления" />
+
+                <Slider Width="100" 
+                    Minimum="1" 
+                    Maximum="10" 
+                    Value="{Binding BrushSize, Mode=TwoWay}" 
+                    TickFrequency="1" 
+                    IsSnapToTickEnabled="True"
+                    ToolTip="Выбор размера кисти"
+                    VerticalAlignment="Center"/>
+
+                <ComboBox Width="140"
+                      x:Name="ComboBoxColor"
+                      ToolTip="Выбор цвета кисти"
+                      SelectedItem="{Binding SelectedColor, Mode=TwoWay}">
+
+                    <ComboBoxItem>Красный</ComboBoxItem>
+                    <ComboBoxItem>Синий</ComboBoxItem>
+                    <ComboBoxItem>Зеленый</ComboBoxItem>
+
+                </ComboBox>
+
+                <Separator/>
+
+                <ToggleButton Content="Рисование"
+                          x:Name="InkModeCanvas"
+                          ToolTip="Режим рисования" 
+                          IsChecked="{Binding IsDrawingMode, Mode=TwoWay}"/>
+
+                <ToggleButton Content="Редактирование" 
+                          ToolTip="Режим редактирования" 
+                          IsChecked="{Binding IsEditingMode, Mode=TwoWay}"/>
+
+                <ToggleButton Content="Удаление" 
+                          ToolTip="Режим удаления"
+                          IsChecked="{Binding IsErasingMode, Mode=TwoWay}"/>
+
+            </ToolBar>
+
+            -->
+        <!-- Footer -->
+        <!--
+            <StatusBar DockPanel.Dock="Bottom">
+
+                <Label x:Name="LabelTextFooter"
+                       Content="{Binding FooterText}"/>
+
+            </StatusBar>
+
+            -->
+        <!-- ContentBottom -->
+        <!--
+            <StackPanel>
+                <InkCanvas x:Name="DrawingCanvas"
+                       Height="auto"
+                       DefaultDrawingAttributes="{Binding DefaultDrawingAttributes}"/>
+            </StackPanel>
+
+        </DockPanel>-->
+
+        <!--////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <!--#endregion-->
+
+    <DockPanel LastChildFill="True">
+
+        <!--header-->
+
+        <Menu DockPanel.Dock="Top"
+              Panel.ZIndex="100"
+              Background="White" 
+              BorderBrush="Navy">
+
+            <MenuItem Header="_Вид">
+
+                <MenuItem Header="_Белый фон"
+                          Command="{Binding MenuItemBackgroundWhiteCommand}"/>
+                          <!--Click="MenuItemBackgroundWhite_Click"-->
+                
+                <MenuItem Header="_Черный фон"
+                          Command="{Binding MenuItemBackgroundBlackCommand}"/>
+                          <!--Click="MenuItemBackgroundBlack_Click"-->
+
+                <Separator/>
+
+                <MenuItem Header="_Выход" 
+                          Command="{Binding MenuItemExitCommand}"/>
+                          <!--Click="MenuItemExit_Click"-->
+            </MenuItem>
+
+            <MenuItem Header="_Справка" 
+                      Command="{Binding MenuItemAboutCommand}"/>
+                      <!--Click="MenuItemAbout_Click"-->
+
+        </Menu>
+
+
+        <!--contentTop-->
+
+        <ToolBar DockPanel.Dock="Top"
+                 x:Name="Toolbar">
+
+            <Label Content="Размер кисти"
+                    ToolTip="Режим удаления"/>
+
+            <Slider x:Name="Slider"
+                    Width="100" 
+                    Minimum="1" 
+                    Maximum="10" 
+                    Value="{Binding ValueSlider }"
+                    TickFrequency="1" 
+                    IsSnapToTickEnabled="True"
+                    ToolTip="Выбор размера кисти"
+                    VerticalAlignment="Center">
+                
+            </Slider>
+
+            <Separator/>
+
+            <Label Content="Цвет кисти"
+                   ToolTip="Режим удаления"/>
+                   <!--ValueChanged="Slider_ValueChanged"-->
+
+            <ComboBox Width="140"
+                      x:Name="ComboBoxColor"
+                      ToolTip="Выбор цвета кисти"
+                      SelectedItem="{Binding SelectedValueCombobox}"
+                      ItemsSource="{Binding ItemsCombobox}">
+                
+                      <!--SelectionChanged="ComboBoxColor_SelectionChanged"-->
+
+                      <!--<ComboBoxItem>Красный</ComboBoxItem>
+                      <ComboBoxItem>Синий</ComboBoxItem>
+                      <ComboBoxItem>Зеленый</ComboBoxItem>-->
+
+            </ComboBox>
+
+            <Separator/>
+
+            <ToggleButton Content="Рисование"
+                          x:Name="InkModeCanvas"
+                          ToolTip="Режим рисования"
+                          Command="{Binding ToggleButtonCommand}"/>
+                          <!--Click="ToolButton_Click"-->
+
+            <ToggleButton Content="Редактирование" 
+                          ToolTip="Режим редактирования" 
+                          Command="{Binding ToggleButtonCommand}"/>
+                          <!--Click="ToolButton_Click"-->
+
+            <ToggleButton Content="Удаление" 
+                          ToolTip="Режим удаления"
+                          Command="{Binding ToggleButtonCommand}"/>
+                          <!--Click="ToolButton_Click"-->
+
+        </ToolBar>
+
+
+
+        <!--footer-->
+
+        <StatusBar DockPanel.Dock="Bottom">
+
+            <Label Content="{Binding StatusBarLable}"
+                   x:Name="LabelTextFooter"/>
+
+        </StatusBar>
+
+
+        <!--contentBottom-->
+
+        <StackPanel>
+
+            <InkCanvas x:Name="DrawingCanvas"
+                       Height="350"
+                       Background="{Binding InkCanvasBackground}"
+                       EditingMode="{Binding EditModeInkCanvas, Mode=TwoWay}"
+                       DefaultDrawingAttributes="{Binding DrawingAttributesInkCanvas, Mode=TwoWay}">
+                
+                <!--<InkCanvas.DefaultDrawingAttributes>
+                    <DrawingAttributes Color="Red" 
+                                       Width="5"
+                                       Height="5"/>
+                </InkCanvas.DefaultDrawingAttributes>-->
+                
+            </InkCanvas>
+
+        </StackPanel>
+
+    </DockPanel>
+</Window>
